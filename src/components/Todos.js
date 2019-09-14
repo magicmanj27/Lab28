@@ -15,6 +15,8 @@ class Todos extends Component {
   }
 }
 
+// console.log(Todos.myCount());
+
 // Todos.prototype = {
 //   todos: PropTypes.array.isRequired
 // }

@@ -1,29 +1,16 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from "./components/layouts/Header.js";
 import Todos from "./components/Todos.js";
 import AddTodo from "./components/AddTodo.js";
+import About from "./components/pages/about.js";
+import uuid from "uuid";
 
 import "./styles.css";
 
 class App extends Component {
   state = {
-    todos: [
-      {
-        id: 1,
-        title: "Take out the trash",
-        completed: false
-      },
-      {
-        id: 2,
-        title: "Dinner with wife",
-        completed: false
-      },
-      {
-        id: 3,
-        title: "Meeting with boss",
-        completed: false
-      }
-    ]
+    todos: []
   };
 
   // Toggle Complete
@@ -46,7 +33,7 @@ class App extends Component {
 
   addTodo = title => {
     const newTodo = {
-      id: 4,
+      id: uuid.v4(),
       title,
       completed: false
     };
@@ -55,17 +42,29 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="container">
-          <Header />
-          <AddTodo addTodo={this.addTodo} />
-          <Todos
-            todos={this.state.todos}
-            markComplete={this.markComplete}
-            delTodo={this.delTodo}
-          />
+      <Router>
+        <div className="App">
+          <div className="container">
+            <Header />
+            <Route
+              exact
+              path="/"
+              render={props => (
+                <React.Fragment>
+                  <AddTodo addTodo={this.addTodo} />
+                  <Todos
+                    todos={this.state.todos}
+                    markComplete={this.markComplete}
+                    delTodo={this.delTodo}
+                  />
+                  <h2>The are <span>{this.state.todos.filter(todo => !todo.completed).length}</span> items to complete</h2>
+                </React.Fragment>
+              )}
+            />
+            <Route path="/about" component={About} />
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }
